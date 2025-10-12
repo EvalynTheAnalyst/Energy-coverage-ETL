@@ -1,0 +1,10 @@
+selenium 
+pandas 
+webdriver-manager
+pymongo
+time
+datetime
+re
+numpy
+bs4
+os
