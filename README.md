@@ -2,36 +2,37 @@
 
 ## Project Overview
 
-**Africa Energy Coverage Data Extractor (2000–2022)** is a Python-based data engineering project designed to **scrape comprehensive energy metrics for all African countries** from the [Africa Energy Portal (AEP)](https://africa-energy-portal.org).  
-Using **Selenium WebDriver**, the system automates data extraction across the **years 2000 to 2022**, handles dynamic web elements (such as year sliders), and compiles structured datasets containing key energy indicators.
+**Africa Energy Coverage Data Extractor (2000–2022)** is a Python-based data engineering project that **extracts comprehensive energy metrics for all African countries** from the [Africa Energy Portal (AEP)](https://africa-energy-portal.org).  
 
-The extracted data is stored in a **CSV file** and can optionally be uploaded to **MongoDB Atlas** for persistent cloud storage, enabling advanced analytics, visualization, and historical comparison.
-
----
-
-## Key Features
-
-- **Full African Coverage** — Includes all 54 African countries.  
-- **Time-Series Data (2000–2022)** — Consistent year-by-year scraping of energy metrics.  
-- **Robust Extraction Logic** — Handles dynamic elements like sliders and asynchronous page loads using Selenium.  
-- **Comprehensive Energy Indicators** — Metrics include Access to Electricity, Installed Capacity, Energy Generation, and Consumption.  
-- **CSV Output Generation** — Cleanly structured data export for analysis.  
-- **MongoDB Integration** — Optional upload of extracted data to a MongoDB Atlas cluster for scalable storage and querying.  
-- **Modular Code Structure** — Separate scripts for scraping, MongoDB operations, and main orchestration.
+Using **Cloudscraper**, the project bypasses Cloudflare protection and efficiently retrieves structured data (2000–2022) directly from the portal’s backend API.  
+The data is cleaned, transformed into a tabular format, and exported to a **CSV file** — with optional storage in **MongoDB Atlas** for scalable cloud access and analysis.
 
 ---
 
-## Technology Stack
+## ⚙️ Key Features
+
+- **Full African Coverage** — Data for all 54 African countries.  
+- **Time-Series (2000–2022)** — Year-by-year energy data extraction.  
+- **API-Level Extraction** — Uses Cloudscraper to fetch JSON directly from AEP’s API, bypassing Cloudflare blocks.  
+- **Efficient and Lightweight** — No need for Selenium or browser automation.  
+- **Clean CSV Export** — Data saved in a standardized, ready-to-analyze structure.  
+- **MongoDB Atlas Integration** — Optional upload to cloud database for persistent storage.  
+- **Comprehensive Energy Metrics** — Covers Access, Generation, Installed Capacity, and Consumption indicators.  
+- **Modular Design** — Separate scripts for web scraping, database insertion, and orchestration.
+
+---
+
+## 🧰 Technology Stack
 
 | Component | Description |
 |------------|-------------|
 | **Language** | Python 3.x |
-| **Automation** | Selenium WebDriver |
-| **Data Handling** | Pandas, NumPy |
-| **Driver Management** | webdriver-manager |
-| **Database** | MongoDB Atlas |
+| **Web Scraping** | Cloudscraper (requests-like interface with Cloudflare bypass) |
+| **Data Handling** | Pandas, JSON |
+| **Database (optional)** | MongoDB Atlas |
 | **Database Library** | PyMongo |
-| **Browser** | Google Chrome (Required for Selenium) |
+| **Progress Tracking** | tqdm |
+| **Environment** | Virtual environment (venv) |
 
 ---
 
@@ -44,7 +45,7 @@ The extracted data is stored in a **CSV file** and can optionally be uploaded to
 
 ├── requirements.txt - List of required dependencies
 
-├── scrape.py - Core scraping logic (AfricaEnergyPortalScraper class)
+├── scrape.py - Core scraping logic (AfricaEnergyPortalScraper)
 
 ├── mongodb.py - MongoDB connection and upload logic
 
@@ -106,6 +107,7 @@ Example (Windows PowerShell)
 setx MONGO_URI "your_mongodb_connection_uri"
 setx MONGO_DATABASE "AfricaEnergyData"
 ```
+<img width="834" height="267" alt="image" src="https://github.com/user-attachments/assets/a2f3de73-b597-4189-93fa-627eedea869b" />
 
 ## Usage
 
