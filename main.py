@@ -1,9 +1,9 @@
-from scrape import scraping
+from scrape import fetch_data
 from mongodb import push_data
 
 def main():
-    scraper = scraping()
-    push_data = push_data(scraper)
+    df = fetch_data()
+    push_data(df)
 
 if __name__ == "__main__":
     main()

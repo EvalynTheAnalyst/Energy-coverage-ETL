@@ -1,30 +1,53 @@
-from dotenv import load_dotenv
+import os
+import pandas as pd
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-import os
+from dotenv import load_dotenv
+from urllib.parse import quote_plus #small helper to make text safer to input inside a url.
+from scrape import fetch_data
 
-def push_data(data,db_name="webscrapping", collection_name = "articles"):
-    if not data:
-        return "no data"
-    
-    load_dotenv()
-    mongo_password = os.getenv('mongo_password')
-    username = os.getenv("evalynnjagi02_db_user")
-
-    uri = f"mongodb+srv://{username}:{mongo_password}p@cluster1.87p81ry.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1"
-
-    # Create a new client and connect to the server
-    client = MongoClient(uri, server_api=ServerApi('1'))
-    db = client[db_name]
-    collection = db[collection_name]
-
-    collection.insert_many(data)
-# Send a ping to confirm a successful connection
-
+def push_data(df, db_name="africa_energy1", collection_name="energy_data1"):
+    """Push dataframe data to MongoDB Atlas collection"""
     try:
+        # Load .env credentials
+        load_dotenv()
+        username = os.getenv("username")
+        mongo_password = quote_plus(os.getenv("mongo_password"))
+
+        # Build connection URI
+        uri = uri = f"mongodb+srv://evalynnjagi02_db_user:osYYtCVAuG6AW9eH@cluster1.87p81ry.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1"
+        client = MongoClient(uri, server_api=ServerApi('1'))
+        db = client[db_name]
+        collection = db[collection_name]
+
+        print(f"\n[CONNECTING] Connected to MongoDB Atlas → Database:{db_name}, Collection: {collection_name}")
+
+
+        # Convert to list of dictionaries for MongoDB
+        df.columns = df.columns.map(str)
+        data = df.to_dict(orient="records")
+        year_cols = [c for c in data.columns if c.isdigit()]
+        meta_cols = [c for c in data.columns if not c.isdigit()]
+        data = data[meta_cols + year_cols]
+
+        # Insert into MongoDB
+        if data:
+            result = collection.insert_many(data)
+            print(f"[SUCCESS] Inserted {len(result.inserted_ids)} records")
+        else:
+            print("[WARNING] No data found")
+
         client.admin.command('ping')
-        print(f"inserted successful {len(data)} document into {db} and {collection_name}")
-        print("Pinged your deployment. You successfully connected to MongoDB!")
+        print("[OK] MongoDB connection verified.")
+        return True
+
     except Exception as e:
-        print(e)
+        print(f"[ERROR] Failed to push data: {e}")
+        return False
+    
+if __name__ == "__main__":
+    push_data(fetch_data())
+
+    
+
     

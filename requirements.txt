@@ -1,10 +1,7 @@
-selenium 
 pandas 
-webdriver-manager
 pymongo
+cloudscrapper
+tqdm
 time
-datetime
-re
 numpy
-bs4
 os
