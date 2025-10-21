@@ -25,10 +25,13 @@ def push_data(df, db_name="africa_energy1", collection_name="energy_data1"):
 
         # Convert to list of dictionaries for MongoDB
         df.columns = df.columns.map(str)
-        data = df.to_dict(orient="records")
-        year_cols = [c for c in data.columns if c.isdigit()]
-        meta_cols = [c for c in data.columns if not c.isdigit()]
-        data = data[meta_cols + year_cols]
+        df["year_values"] = df.apply(
+        lambda row: {str(year): row[str(year)] for year in range(2000, 2023)},
+        axis=1
+        )
+        df = df[["country","metric","unit","sector","sub_sector","source","source_link","year_values"]]
+        
+        data = df.to_dict(orient='records')
 
         # Insert into MongoDB
         if data:
