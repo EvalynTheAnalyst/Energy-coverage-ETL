@@ -15,7 +15,7 @@ def push_data(df, db_name="africa_energy1", collection_name="energy_data1"):
         mongo_password = quote_plus(os.getenv("mongo_password"))
 
         # Build connection URI
-        uri = uri = f"mongodb+srv://evalynnjagi02_db_user:osYYtCVAuG6AW9eH@cluster1.87p81ry.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1"
+        uri = f"mongodb+srv://{username}:{mongo_password}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1"
         client = MongoClient(uri, server_api=ServerApi('1'))
         db = client[db_name]
         collection = db[collection_name]
@@ -48,8 +48,6 @@ def push_data(df, db_name="africa_energy1", collection_name="energy_data1"):
         print(f"[ERROR] Failed to push data: {e}")
         return False
     
-if __name__ == "__main__":
-    push_data(fetch_data())
 
     
 
